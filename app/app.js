@@ -39,9 +39,8 @@ io.sockets.on('connect', socket => {
     sign();
   });
   socket.on('solicitud', () => {
-    axios.get('https://api.cambio.today/v1/quotes/USD/GTQ/json?quantity=1&key=1907|A3YHGkRXRg0stkbBj*_b_OeJiTo~JgOK').then(res => {
-      socket.emit('cambio', res.data.result);
-      console.log(res);
+    axios.get('https://free.currencyconverterapi.com/api/v6/convert?q=USD_GTQ&compact=ultra&apiKey=157e0765190fd121de41').then(res => {
+      socket.emit('cambio', res.data);
     });
   });
 });

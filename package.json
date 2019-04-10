@@ -21,7 +21,5 @@
     "socket.io": "^2.2.0",
     "xadesjs": "^2.0.14",
     "xml-js": "^1.6.11"
-  },
-  "devDependencies": {},
-  "keywords": []
+  }
 }
