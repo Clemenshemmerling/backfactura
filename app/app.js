@@ -20,6 +20,7 @@ const postedData =
 let { Crypto } = require("@peculiar/webcrypto");
 let xml;
 let key;
+let llave;
 let factura;
 let keyFile = fs.readFileSync('key/llave.pfx');
 let keyBase64 = keyFile.toString('base64');
@@ -32,7 +33,6 @@ server.listen(port);
 
 io.sockets.on('connect', socket => {
   io.sockets.emit('key', key);
-  io.sockets.emit('factura', factura);
   socket.on('body', body => {
     xml = body;
     console.log(xml);
@@ -43,6 +43,15 @@ io.sockets.on('connect', socket => {
       socket.emit('cambio', res.data);
     });
   });
+  socket.on('factura', factura => {
+    axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
+      headers: {
+        'Content-Type': 'application/xml', 
+        Authorization: 'Bearer ' + llave 
+      }
+    })
+      .then(res => console.log(res)).catch(err => console.log(err));
+  });
 });
 
 axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', postedData, {
@@ -51,8 +60,8 @@ axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken'
   }
 })
   .then(res => {
-    console.log('Token: ' + res);
     key = convert.xml2js(res.data, {compact: true, spaces: 2});
+    llave = key.SolicitaTokenResponse.token._text;
   })
   .catch(error => {
     console.log('Error en token ' + error);
