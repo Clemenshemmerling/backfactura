@@ -50,8 +50,7 @@ io.sockets.on('connect', socket => {
         'Content-Type': 'application/xml', 
         Authorization: 'Bearer ' + llave 
       }
-    })
-      .then(res => {
+    }).then(res => {
         let r;
         r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
             .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
@@ -70,10 +69,13 @@ io.sockets.on('connect', socket => {
           let respuesta = convert.xml2js(r, {compact: true, spaces: 2});
           socket.emit('respuesta', respuesta);
           console.log(respuesta);
-        }).catch(err => console.log(err));  
+        }).catch(err => {
+          error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
+          socket.emit('serError', error);
+        });  
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
-         socket.emit('serError', error);
+        socket.emit('serError', error);
       });
   });
 });
