@@ -9,6 +9,7 @@ const fs = require("fs"),
   child_process = require('child_process'),
   path = require('path'),
   forge = require('node-forge'),
+  decode = require('unescape'),
   xadesjs = require("xadesjs");
   
 const postedData =
@@ -21,7 +22,7 @@ let { Crypto } = require("@peculiar/webcrypto");
 let xml;
 let key;
 let llave;
-let factura;
+let fact;
 let keyFile = fs.readFileSync('key/llave.pfx');
 let keyBase64 = keyFile.toString('base64');
 let p12Der = forge.util.decode64(keyBase64);
@@ -50,7 +51,26 @@ io.sockets.on('connect', socket => {
         Authorization: 'Bearer ' + llave 
       }
     })
-      .then(res => console.log(res)).catch(err => console.log(err));
+      .then(res => {
+        let r;
+        r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
+            .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
+            .replace(/<uuid>|<\/uuid>/g, ''));
+        fact = '<?xml version="1.0" encoding="UTF-8"?><RegistraDocumentoXMLRequest id="866437D6-0BE3-467C-947C-EC8018DB0AE9"><xml_dte><![CDATA[' + 
+                r.substring(0, r.length - 37) + ']]></xml_dte></RegistraDocumentoXMLRequest>';
+        console.log(fact);
+        axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/registrarDocumentoXML', fact, {
+          headers: {
+            'Content-Type': 'application/xml', 
+            Authorization: 'Bearer ' + llave 
+          }
+        }).then(res => {
+          let r;
+          r = decode(res.data);
+          console.log(r);
+          socket.emit('respuesta', r);
+        }).catch(err => console.log(err));  
+      }).catch(err => console.log(err));
   });
 });
 
