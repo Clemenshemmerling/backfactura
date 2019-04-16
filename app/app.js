@@ -67,10 +67,14 @@ io.sockets.on('connect', socket => {
         }).then(res => {
           let r;
           r = decode(res.data);
-          console.log(r);
-          socket.emit('respuesta', r);
+          let respuesta = convert.xml2js(r, {compact: true, spaces: 2});
+          socket.emit('respuesta', respuesta);
+          console.log(respuesta);
         }).catch(err => console.log(err));  
-      }).catch(err => console.log(err));
+      }).catch(err => {
+        error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
+         socket.emit('serError', error);
+      });
   });
 });
 
