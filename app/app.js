@@ -71,11 +71,13 @@ io.sockets.on('connect', socket => {
           console.log(respuesta);
         }).catch(err => {
           error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
+          console.log('Post Firma: ' + err);
           socket.emit('serError', error);
         });  
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
+        console.log(error);
       });
   });
 });
