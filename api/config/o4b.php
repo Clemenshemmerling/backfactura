@@ -1,5 +1,5 @@
 <?php
-function Conexion_OCI($db)
+function Conexion_OCI($db='GM2000')
 {
     switch($db){
       case "MACROIT":   $port="1521";$ip="172.31.52.112";break;

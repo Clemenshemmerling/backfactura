@@ -31,7 +31,7 @@ services:
       - api
 
   api:
-    image: php:7.0-fpm
+    image: php:7.3-fpm
     volumes:
       - ./api:/var/www/html
     command: "true"

@@ -68,16 +68,17 @@ io.sockets.on('connect', socket => {
           r = decode(res.data);
           let respuesta = convert.xml2js(r, {compact: true, spaces: 2});
           socket.emit('respuesta', respuesta);
+          console.log('si firmo');
           console.log(respuesta);
         }).catch(err => {
           error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
-          console.log('Post Firma: ' + err);
-          socket.emit('serError', error);
+          console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
+          socket.emit('satError', error);
         });  
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
-        console.log(error);
+        console.log(error.FirmaDocumentoResponse.listado_errores.error);
       });
   });
 });

@@ -1,4 +1,4 @@
-FROM php:7.0-fpm
+FROM php:7.3-fpm
 
 ENV ORACLE_HOME=/opt/oracle/instantclient_12_2
 ENV TNS_ADMIN=/opt/oracle/instantclient_12_2/network/admin
@@ -11,6 +11,7 @@ RUN apt-get install -y vim mlocate
 RUN updatedb
 
 RUN mkdir -p /opt/oracle/instantclient_12_2/network/admin
+
 COPY ./instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
 COPY ./instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
 COPY ./instantclient-jdbc-linux.x64-12.2.0.1.0.zip /opt/oracle
