@@ -1,17 +1,13 @@
 <?php
-function Conexion_OCI($db='GM2000')
+function Conexion_OCI()
 {
-    switch($db){
-      case "MACROIT":   $port="1521";$ip="172.31.52.112";break;
-      case  "GM2000":   $port="1522";$ip="172.31.52.112";break;
-    }
     $usr='CHEMMERLING';$clv='MACRO2019';
-    $con = ocinlogon($usr,$clv,"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=$ip)(PORT=".$port."))(CONNECT_DATA=(SID=".$db.")))") or die ("db Error de Conexion db");
+    $con = ocinlogon($usr,$clv,"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=172.31.52.112)(PORT=1522))(CONNECT_DATA=(SID=gm2000)))") or die ("db Error de Conexion db");
     return $con;
 }
-function EjecutarOCI_SLC($SQL,$BD)
+function EjecutarOCI_SLC($SQL)
 {
-    $con = Conexion_OCI($BD) or die ("Error de conexion.");
+    $con = Conexion_OCI() or die ("Error de conexion.");
     $Resultado = oci_parse($con,$SQL);
     oci_execute($Resultado);
     oci_close($con);

@@ -10,7 +10,8 @@ const fs = require("fs"),
   path = require('path'),
   forge = require('node-forge'),
   decode = require('unescape'),
-  xadesjs = require("xadesjs");
+  xadesjs = require("xadesjs"),
+  qs = require('qs');
   
 const postedData =
   `<?xml version='1.0' encoding='UTF-8'?>
@@ -30,7 +31,7 @@ let p12Asn1 = forge.asn1.fromDer(p12Der);
 let p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, 'E/2019/Fcs');
 
 console.log(p12);
-server.listen(port);
+server.listen(port, '0.0.0.0');
 
 io.sockets.on('connect', socket => {
   io.sockets.emit('key', key);
@@ -39,10 +40,50 @@ io.sockets.on('connect', socket => {
     console.log(xml);
     sign();
   });
-  socket.on('solicitud', () => {
+  socket.on('solicitud', (res) => {
     axios.get('https://free.currencyconverterapi.com/api/v6/convert?q=USD_GTQ&compact=ultra&apiKey=157e0765190fd121de41').then(res => {
       socket.emit('cambio', res.data);
     });
+  });
+  socket.on('conservasa', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', result);
+    console.log(result);
+  });
+  socket.on('cotesa', (res) => {
+    let result = parseInt(res, 10) + 1;
+    console.log(result);
+    socket.emit('correlativo', result);
+  });
+  socket.on('provisa', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', err.data);
+    console.log(result);
+  });
+  socket.on('asciende', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', result);
+    console.log(result);
+  });
+  socket.on('ceibalia', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', result);
+    console.log(result);
+  });
+  socket.on('brickel', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', result);
+    console.log(result);
+  });
+  socket.on('fucorsa', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', result);
+    console.log(result);
+  });
+  socket.on('rensersa', (res) => {
+    let result = parseInt(res, 10) + 1;
+    socket.emit('correlativo', result);
+    console.log(result);
   });
   socket.on('factura', factura => {
     axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
@@ -74,7 +115,8 @@ io.sockets.on('connect', socket => {
           error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
           console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
           socket.emit('satError', error);
-        });  
+        });
+        socket.emit('respuesta', respuesta);  
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
