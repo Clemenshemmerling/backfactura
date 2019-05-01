@@ -45,61 +45,68 @@ io.sockets.on('connect', socket => {
       socket.emit('cambio', res.data);
     });
   });
-  socket.on('conservasa', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', result);
-    console.log(result);
+  socket.on('conservasa', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].conservasa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('cotesa', (res) => {
-    let result = parseInt(res, 10) + 1;
-    console.log(result);
-    socket.emit('correlativo', result);
+  socket.on('cotesa', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].cotesa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('provisa', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', err.data);
-    console.log(result);
+  socket.on('provisa', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].provisa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('asciende', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', result);
-    console.log(result);
+  socket.on('asciende', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].asciende, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('ceibalia', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', result);
-    console.log(result);
+  socket.on('ceibalia', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].ceibalia, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('brickel', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', result);
-    console.log(result);
+  socket.on('brickel', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].brickel, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('fucorsa', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', result);
-    console.log(result);
+  socket.on('fucorsa', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].fucorsa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('rensersa', (res) => {
-    let result = parseInt(res, 10) + 1;
-    socket.emit('correlativo', result);
-    console.log(result);
+  socket.on('rensersa', () => {
+    axios.get('http://192.168.0.107/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].rensersa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
   });
-  socket.on('factura', factura => {
+  socket.on('anular', factura => {
     axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
       headers: {
         'Content-Type': 'application/xml', 
         Authorization: 'Bearer ' + llave 
       }
-    }).then(res => {
-        let r;
-        r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
-            .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
-            .replace(/<uuid>|<\/uuid>/g, ''));
-        fact = '<?xml version="1.0" encoding="UTF-8"?><RegistraDocumentoXMLRequest id="866437D6-0BE3-467C-947C-EC8018DB0AE9"><xml_dte><![CDATA[' + 
-                r.substring(0, r.length - 37) + ']]></xml_dte></RegistraDocumentoXMLRequest>';
-        console.log(fact);
-        axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/registrarDocumentoXML', fact, {
+  }).then(res => {
+    let r;
+    r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
+        .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
+        .replace(/<uuid>|<\/uuid>/g, ''));
+    fact = '<?xml version="1.0" encoding="UTF-8"?><AnulaDocumentoXMLRequest id="866437D6-0BE3-467C-947C-EC8018DB0AE9"><xml_dte><![CDATA[' + 
+            r.substring(0, r.length - 37) + ']]></xml_dte></AnulaDocumentoXMLRequest>';
+      axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/anularDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
             Authorization: 'Bearer ' + llave 
@@ -121,9 +128,62 @@ io.sockets.on('connect', socket => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
         console.log(error.FirmaDocumentoResponse.listado_errores.error);
-      });
+    });
   });
+  socket.on('factura', factura => {
+    axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
+      headers: {
+        'Content-Type': 'application/xml', 
+        Authorization: 'Bearer ' + llave 
+      }
+    }).then(res => {
+        let r;
+        r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
+            .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
+            .replace(/<uuid>|<\/uuid>/g, ''));
+        fact = '<?xml version="1.0" encoding="UTF-8"?><RegistraDocumentoXMLRequest id="866437D6-0BE3-467C-947C-EC8018DB0AE9"><xml_dte><![CDATA[' + 
+                r.substring(0, r.length - 37) + ']]></xml_dte></RegistraDocumentoXMLRequest>';
+        console.log(fact);
+        socket.emit('test', fact);
+        axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/registrarDocumentoXML', fact, {
+          headers: {
+            'Content-Type': 'application/xml', 
+            Authorization: 'Bearer ' + llave 
+          }
+        }).then(res => {
+          let r;
+          r = decode(res.data);
+          let respuesta = convert.xml2js(r, {compact: true, spaces: 2});
+          socket.emit('respuesta', respuesta);
+          console.log('si firmo');
+          console.log(respuesta);
+        }).catch(err => {
+          error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
+          console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
+          socket.emit('satError', error);
+        });
+        socket.emit('respuesta', respuesta);  
+      }).catch(err => {
+        // error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
+        // socket.emit('serError', error);
+        // console.log(error.FirmaDocumentoResponse.listado_errores.error);
+      });
+      socket.on('sistemaServ', datos => {
+        axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
+          console.log('Agregado al sistema');
+          socket.emit('resSys');
+          console.log(datos);
+        }).catch(err => {
+          console.log(err);
+          socket.emit('errSisServ', 'error en el servidor');
+        });
+        socket.removeAllListeners();
+      });
+      // socket.removeAllListeners();
+  });
+
 });
+
 
 axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', postedData, {
   headers: {
@@ -137,8 +197,6 @@ axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken'
   .catch(error => {
     console.log('Error en token ' + error);
   });
-
-
 
 function sign() {
   xadesjs.Application.setEngine("NodeJS", new Crypto());
@@ -165,7 +223,6 @@ function sign() {
   .catch(function(err){
     console.error(err);
   });
-  
   function SignXml(xmlString, keys, algorithm) {
     return Promise.resolve()
       .then(() => {

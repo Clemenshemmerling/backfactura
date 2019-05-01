@@ -6,7 +6,7 @@ $con = conexion();
 
 $numero = $_POST['numero'];
 
-$sql = "UPDATE correlativo  SET resenrsa = $numero WHERE id = 1";
+$sql = "UPDATE correlativo  SET rensersa = $numero WHERE id = 1";
 
 if (mysqli_query($con, $sql)) {
     echo "Factura guardada correctamente";
