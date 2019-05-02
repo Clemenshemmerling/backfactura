@@ -62,6 +62,20 @@ io.sockets.on('connect', socket => {
     console.log(xml);
     sign();
   });
+
+  socket.on('compania', compania => {
+    if (compania === 'conservasa') {
+      Solllave(conservasa);
+      io.sockets.emit('key', key);
+    } else if (compania === 'fucorsa') {
+      Solllave(fucorsa);
+      io.sockets.emit('key', key);
+    } else if (compania === 'rensersa') {
+      Solllave(rensersa);
+      io.sockets.emit('key', key);
+    }
+  });
+
   socket.on('sistemaServ', datos => {
     axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
       console.log('Agregado al sistema');
@@ -139,7 +153,7 @@ io.sockets.on('connect', socket => {
         .replace(/<uuid>|<\/uuid>/g, ''));
     fact = '<?xml version="1.0" encoding="UTF-8"?><AnulaDocumentoXMLRequest id="866437D6-0BE3-467C-947C-EC8018DB0AE9"><xml_dte><![CDATA[' + 
             r.substring(0, r.length - 37) + ']]></xml_dte></AnulaDocumentoXMLRequest>';
-      axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/anularDocumentoXML', fact, {
+      axios.post('https://api.ifacere-fel.com/api/anularDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
             Authorization: 'Bearer ' + llave 
@@ -178,7 +192,7 @@ io.sockets.on('connect', socket => {
                 r.substring(0, r.length - 37) + ']]></xml_dte></RegistraDocumentoXMLRequest>';
         console.log(fact);
         socket.emit('test', fact);
-        axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/registrarDocumentoXML', fact, {
+        axios.post('https://api.ifacere-fel.com/api/registrarDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
             Authorization: 'Bearer ' + llave 
@@ -207,7 +221,7 @@ io.sockets.on('connect', socket => {
 });
 
 function Solllave(compania) {
-  axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', compania, {
+  axios.post('https://api.ifacere-fel.com/api/solicitarToken', compania, {
     headers: {
       'content-type': 'application/xml'
     }
@@ -215,26 +229,13 @@ function Solllave(compania) {
   .then(res => {
     key = convert.xml2js(res.data, {compact: true, spaces: 2});
     llave = key.SolicitaTokenResponse.token._text;
+    console.log(llave);
   })
   .catch(error => {
     console.log('Error en token ' + error);
   });
 }
 
-function Solllave(compania) {
-  axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', compania, {
-    headers: {
-      'content-type': 'application/xml'
-    }
-  })
-  .then(res => {
-    key = convert.xml2js(res.data, {compact: true, spaces: 2});
-    llave = key.SolicitaTokenResponse.token._text;
-  })
-  .catch(error => {
-    console.log('Error en token ' + error);
-  });
-}
 function sign() {
   xadesjs.Application.setEngine("NodeJS", new Crypto());
   
