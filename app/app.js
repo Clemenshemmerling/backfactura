@@ -229,7 +229,7 @@ function Solllave(compania) {
   .then(res => {
     key = convert.xml2js(res.data, {compact: true, spaces: 2});
     llave = key.SolicitaTokenResponse.token._text;
-    console.log(llave);
+    console.log('esta es la compania: ' + compania + 'esta es la llave: ' +  llave);
   })
   .catch(error => {
     console.log('Error en token ' + error);
