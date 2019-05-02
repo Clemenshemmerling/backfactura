@@ -40,7 +40,7 @@ const rensersa =
     <usuario>2693440K</usuario>
     <apikey>uzQ4mquy4etJOswhbM8Cxc6</apikey>
   </SolicitaTokenRequest>`;
-    
+
 let { Crypto } = require("@peculiar/webcrypto");
 let xml;
 let key;
@@ -61,6 +61,17 @@ io.sockets.on('connect', socket => {
     xml = body;
     console.log(xml);
     sign();
+  });
+  socket.on('sistemaServ', datos => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
+      console.log('Agregado al sistema');
+      socket.emit('resSys');
+      console.log(datos);
+    }).catch(err => {
+      console.log(err);
+      socket.emit('errSisServ', 'error en el servidor');
+    });
+    socket.removeAllListeners();
   });
   socket.on('solicitud', (res) => {
     axios.get('https://free.currencyconverterapi.com/api/v6/convert?q=USD_GTQ&compact=ultra&apiKey=157e0765190fd121de41').then(res => {
@@ -190,28 +201,17 @@ io.sockets.on('connect', socket => {
         // socket.emit('serError', error);
         console.log(err.response.data);
       });
-      socket.on('sistemaServ', datos => {
-        axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
-          console.log('Agregado al sistema');
-          socket.emit('resSys');
-          console.log(datos);
-        }).catch(err => {
-          console.log(err);
-          socket.emit('errSisServ', 'error en el servidor');
-        });
-        socket.removeAllListeners();
-      });
       // socket.removeAllListeners();
   });
 
 });
 
-
-axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', postedData, {
-  headers: {
-    'content-type': 'application/xml'
-  }
-})
+function Solllave(compania) {
+  axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', compania, {
+    headers: {
+      'content-type': 'application/xml'
+    }
+  })
   .then(res => {
     key = convert.xml2js(res.data, {compact: true, spaces: 2});
     llave = key.SolicitaTokenResponse.token._text;
@@ -219,7 +219,22 @@ axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken'
   .catch(error => {
     console.log('Error en token ' + error);
   });
+}
 
+function Solllave(compania) {
+  axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', compania, {
+    headers: {
+      'content-type': 'application/xml'
+    }
+  })
+  .then(res => {
+    key = convert.xml2js(res.data, {compact: true, spaces: 2});
+    llave = key.SolicitaTokenResponse.token._text;
+  })
+  .catch(error => {
+    console.log('Error en token ' + error);
+  });
+}
 function sign() {
   xadesjs.Application.setEngine("NodeJS", new Crypto());
   
