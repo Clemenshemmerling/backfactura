@@ -16,7 +16,7 @@
     "child_process": "^1.0.2",
     "express": "^4.16.4",
     "node-forge": "^0.8.2",
-    "nodemon": "^1.18.10",
+    "nodemon": "^1.19.0",
     "path": "^0.12.7",
     "socket.io": "^2.2.0",
     "xadesjs": "^2.0.14",

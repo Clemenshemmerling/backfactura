@@ -166,7 +166,7 @@ io.sockets.on('connect', socket => {
       }).catch(err => {
         // error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         // socket.emit('serError', error);
-        // console.log(error.FirmaDocumentoResponse.listado_errores.error);
+        console.log(err.response.data);
       });
       socket.on('sistemaServ', datos => {
         axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
