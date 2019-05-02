@@ -184,6 +184,7 @@ io.sockets.on('connect', socket => {
         Authorization: 'Bearer ' + llave 
       }
     }).then(res => {
+        console.log('firma: ' + 'Bearer ' + llave);
         let r;
         r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
             .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
@@ -214,6 +215,7 @@ io.sockets.on('connect', socket => {
         // error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         // socket.emit('serError', error);
         console.log(err.response.data);
+        console.log('Error: ' + 'Bearer ' + llave);
       });
       // socket.removeAllListeners();
   });
