@@ -141,7 +141,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('anular', factura => {
-    axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura, {
+    axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
       headers: {
         'Content-Type': 'application/xml', 
         Authorization: 'Bearer ' + llave 
@@ -153,7 +153,7 @@ io.sockets.on('connect', socket => {
         .replace(/<uuid>|<\/uuid>/g, ''));
     fact = '<?xml version="1.0" encoding="UTF-8"?><AnulaDocumentoXMLRequest id="866437D6-0BE3-467C-947C-EC8018DB0AE9"><xml_dte><![CDATA[' + 
             r.substring(0, r.length - 37) + ']]></xml_dte></AnulaDocumentoXMLRequest>';
-      axios.post('https://api.ifacere-fel.com/api/anularDocumentoXML', fact, {
+      axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/anularDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
             Authorization: 'Bearer ' + llave 
@@ -179,7 +179,7 @@ io.sockets.on('connect', socket => {
   });
   socket.on('factura', factura => {
     let key = 'Bearer ' + llave;
-    axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura, {
+    axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
       headers: {
         'Content-Type': 'application/xml', 
         Authorization: key
@@ -194,7 +194,7 @@ io.sockets.on('connect', socket => {
                 r.substring(0, r.length - 37) + ']]></xml_dte></RegistraDocumentoXMLRequest>';
         console.log(fact);
         socket.emit('test', fact);
-        axios.post('https://api.ifacere-fel.com/api/registrarDocumentoXML', fact, {
+        axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/registrarDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
             Authorization: 'Bearer ' + llave 
@@ -224,7 +224,7 @@ io.sockets.on('connect', socket => {
 });
 
 function Solllave(compania) {
-  axios.post('https://api.ifacere-fel.com/api/solicitarToken', compania, {
+  axios.post('https://dev.api.ifacere-fel.com/fel-dte-services/api/solicitarToken', compania, {
     headers: {
       'content-type': 'application/xml'
     }
