@@ -178,13 +178,14 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('factura', factura => {
+    let key = 'Bearer ' + llave;
     axios.post('https://dev.api.soluciones-mega.com/api/solicitaFirma', factura, {
       headers: {
         'Content-Type': 'application/xml', 
-        Authorization: 'Bearer ' + llave 
+        Authorization: key
       }
     }).then(res => {
-        console.log('firma: ' + 'Bearer ' + llave);
+        console.log('firma: ' + key);
         let r;
         r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
             .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
@@ -196,7 +197,7 @@ io.sockets.on('connect', socket => {
         axios.post('https://api.ifacere-fel.com/api/registrarDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
-            Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJvcGVuaWQiXSwiZXhwIjoxNTg4MzUyNzQwLCJhdXRob3JpdGllcyI6WyJST0xFX0VNSVNPUiJdLCJqdGkiOiIzYjUxNGViZi0wOGViLTQ3ZGItOWQ5MC1iNjIwOGJkOWJmN2UiLCJjbGllbnRfaWQiOiIzNTMyNTM1NiJ9.A_1e0gGH2AMVsWWGJKq9INh02l2Znft1ktgjbsRj6IYDOff_j4WX0P42Il8VjEOOLSSuA1picoVWyyPifJjSGv4lebhg0BWOzngT4SrcoOZ1ppbxClfF3NlNyxidZUzxGF7WN9RXu_MW8fW-2qcFmeuR4XIHeqYn9yTsWFUEkoyTZb1U9h8eXL5oOZWpqxCmvgXPYN8yGrp7mfDi-4YngsvZdIpn3yYC4TydykixxHSZYwSb9kgNgtTJ2H25UAJrEXph7hq5wOa1_jFbSQfdEzrAH03f1DFhCf-rM8cy431nXFwjMst3ysBfL9_jM7d1yJpzsvMSBgtXLPbp2mYVTw'
+            Authorization: 'Bearer ' + llave 
           }
         }).then(res => {
           let r;
