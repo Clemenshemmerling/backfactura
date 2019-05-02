@@ -19,6 +19,28 @@ const postedData =
     <usuario>47250763</usuario>
     <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
   </SolicitaTokenRequest>`;
+
+  const  conservasa = 
+  `<?xml version='1.0' encoding='UTF-8'?>
+  <SolicitaTokenRequest>
+    <usuario>35325356</usuario>
+    <apikey>746LmorZ8MHjHRogvsFttE8</apikey>
+  </SolicitaTokenRequest>`;
+
+const fucorsa =
+  `<?xml version='1.0' encoding='UTF-8'?>
+  <SolicitaTokenRequest>
+    <usuario>47250763</usuario>
+    <apikey>i6bhHS4Da8MktQKZ3uwuPFR</apikey>
+  </SolicitaTokenRequest>`;
+
+const rensersa =   
+  `<?xml version='1.0' encoding='UTF-8'?>
+  <SolicitaTokenRequest>
+    <usuario>2693440K</usuario>
+    <apikey>uzQ4mquy4etJOswhbM8Cxc6</apikey>
+  </SolicitaTokenRequest>`;
+    
 let { Crypto } = require("@peculiar/webcrypto");
 let xml;
 let key;
