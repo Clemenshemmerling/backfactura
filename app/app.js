@@ -18,28 +18,48 @@ const postedData =
   <SolicitaTokenRequest>
     <usuario>47250763</usuario>
     <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
-  </SolicitaTokenRequest>`;
+  </SolicitaTokenRequest>`;  
+// `<?xml version='1.0' encoding='UTF-8'?>
+  // <SolicitaTokenRequest>
+  //   <usuario>47250763</usuario>
+  //   <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
+  // </SolicitaTokenRequest>`;
 
   const  conservasa = 
   `<?xml version='1.0' encoding='UTF-8'?>
   <SolicitaTokenRequest>
-    <usuario>35325356</usuario>
-    <apikey>746LmorZ8MHjHRogvsFttE8</apikey>
+    <usuario>47250763</usuario>
+    <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
   </SolicitaTokenRequest>`;
+  // `<?xml version='1.0' encoding='UTF-8'?>
+  // <SolicitaTokenRequest>
+  //   <usuario>35325356</usuario>
+  //   <apikey>746LmorZ8MHjHRogvsFttE8</apikey>
+  // </SolicitaTokenRequest>`;
 
 const fucorsa =
   `<?xml version='1.0' encoding='UTF-8'?>
   <SolicitaTokenRequest>
     <usuario>47250763</usuario>
-    <apikey>i6bhHS4Da8MktQKZ3uwuPFR</apikey>
-  </SolicitaTokenRequest>`;
+    <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
+  </SolicitaTokenRequest>`;  
+// `<?xml version='1.0' encoding='UTF-8'?>
+  // <SolicitaTokenRequest>
+  //   <usuario>47250763</usuario>
+  //   <apikey>i6bhHS4Da8MktQKZ3uwuPFR</apikey>
+  // </SolicitaTokenRequest>`;
 
 const rensersa =   
   `<?xml version='1.0' encoding='UTF-8'?>
   <SolicitaTokenRequest>
-    <usuario>2693440K</usuario>
-    <apikey>uzQ4mquy4etJOswhbM8Cxc6</apikey>
-  </SolicitaTokenRequest>`;
+    <usuario>47250763</usuario>
+    <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
+  </SolicitaTokenRequest>`;  
+// `<?xml version='1.0' encoding='UTF-8'?>
+  // <SolicitaTokenRequest>
+  //   <usuario>2693440K</usuario>
+  //   <apikey>uzQ4mquy4etJOswhbM8Cxc6</apikey>
+  // </SolicitaTokenRequest>`;
 
 let { Crypto } = require("@peculiar/webcrypto");
 let xml;
@@ -79,13 +99,45 @@ io.sockets.on('connect', socket => {
   socket.on('sistemaServ', datos => {
     axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
       console.log('Agregado al sistema');
-      socket.emit('resSys');
       console.log(datos);
     }).catch(err => {
       console.log(err);
       socket.emit('errSisServ', 'error en el servidor');
     });
-    socket.removeAllListeners();
+    socket.emit('resSys', 'datos desde el servidor');
+    // socket.removeAllListeners();
+  });
+  socket.on('insertServicio', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmservicio.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResServicio', 'Se guardaron los datos de servicio en el sistema');
+    }).catch(err => {
+      console.log('Este es el error al insertar detalles: ' + err.data);
+    });
+  });
+  socket.on('insertObra', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmobra.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResObra', 'Se guardaron los datos de obra en el sistema');
+    }).catch(err => {
+      console.log('Error al ingresar items en obra: ' + err.data);
+    });
+  });
+  socket.on('insertBien', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmbien.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResBien', 'Se guardaron los datos de bien en el sistema');
+    }).catch(err => {
+      console.log('Error al ingresar items en bien: ' + err.data);
+    });
+  });
+  socket.on('insertEspecial', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmespecial.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResEspecial', 'Se guardaron los datos de especial en el sistema');
+    }).catch(err => {
+      console.log('Error al ingresar items en especial: ' + err.data);
+    });
   });
   socket.on('solicitud', (res) => {
     axios.get('https://free.currencyconverterapi.com/api/v6/convert?q=USD_GTQ&compact=ultra&apiKey=157e0765190fd121de41').then(res => {
@@ -174,7 +226,7 @@ io.sockets.on('connect', socket => {
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
-        console.log(error.FirmaDocumentoResponse.listado_errores.error);
+        console.log('Error en la firma: ' + err);
     });
   });
   socket.on('factura', factura => {
