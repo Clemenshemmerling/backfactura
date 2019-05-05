@@ -107,6 +107,17 @@ io.sockets.on('connect', socket => {
     socket.emit('resSys', 'datos desde el servidor');
     // socket.removeAllListeners();
   });
+  socket.on('headEspecial', datos => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facheadespecial.php', datos).then(res => {
+      console.log('Agregado al sistema');
+      console.log(datos);
+    }).catch(err => {
+      console.log(err);
+      socket.emit('errSisServ', 'error en el servidor');
+    });
+    socket.emit('resSys', 'datos desde el servidor');
+    // socket.removeAllListeners();
+  });
   socket.on('insertServicio', items => {
     axios.post('http://nodecore.grupomacro.com:9001/fel/facitmservicio.php', items).then(res => {
       console.log(res.data);
@@ -221,8 +232,7 @@ io.sockets.on('connect', socket => {
           error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
           console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
           socket.emit('satError', error);
-        });
-        socket.emit('respuesta', respuesta);  
+        }); 
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
@@ -263,7 +273,6 @@ io.sockets.on('connect', socket => {
           console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
           socket.emit('satError', error);
         });
-        socket.emit('respuesta', respuesta);  
       }).catch(err => {
         // error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         // socket.emit('serError', error);
