@@ -118,6 +118,11 @@ io.sockets.on('connect', socket => {
     socket.emit('resSys', 'datos desde el servidor');
     // socket.removeAllListeners();
   });
+  socket.on('requisar', datos => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facdistespecial.php', datos).then(res => {
+      console.log(res.data);
+    }).catch(err => console.log(err.data));
+  });
   socket.on('insertServicio', items => {
     axios.post('http://nodecore.grupomacro.com:9001/fel/facitmservicio.php', items).then(res => {
       console.log(res.data);
