@@ -79,13 +79,68 @@ io.sockets.on('connect', socket => {
   socket.on('sistemaServ', datos => {
     axios.post('http://nodecore.grupomacro.com:9001/fel/fachead.php', datos).then(res => {
       console.log('Agregado al sistema');
-      socket.emit('resSys');
       console.log(datos);
     }).catch(err => {
       console.log(err);
       socket.emit('errSisServ', 'error en el servidor');
     });
-    socket.removeAllListeners();
+    socket.emit('resSys', 'datos desde el servidor');
+    // socket.removeAllListeners();
+  });
+  socket.on('headEspecial', datos => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facheadespecial.php', datos).then(res => {
+      console.log('Agregado al sistema');
+      console.log(datos);
+    }).catch(err => {
+      console.log(err);
+      socket.emit('errSisServ', 'error en el servidor');
+    });
+    socket.emit('resSys', 'datos desde el servidor');
+    // socket.removeAllListeners();
+  });
+  socket.on('requisar', datos => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facdistespecial.php', datos).then(res => {
+      console.log(res.data);
+    }).catch(err => console.log(err.data));
+  });
+  socket.on('insertServicio', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmservicio.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResServicio', 'Se guardaron los datos de servicio en el sistema');
+    }).catch(err => {
+      console.log('Este es el error al insertar detalles: ' + err.data);
+    });
+  });
+  socket.on('insertObra', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmobra.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResObra', 'Se guardaron los datos de obra en el sistema');
+    }).catch(err => {
+      console.log('Error al ingresar items en obra: ' + err.data);
+    });
+  });
+  socket.on('insertBien', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmbien.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResBien', 'Se guardaron los datos de bien en el sistema');
+    }).catch(err => {
+      console.log('Error al ingresar items en bien: ' + err.data);
+    });
+  });
+  socket.on('insertEspecial', items => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmespecial.php', items).then(res => {
+      console.log(res.data);
+      socket.emit('insertResEspecial', 'Se guardaron los datos de especial en el sistema');
+    }).catch(err => {
+      console.log('Error al ingresar items en especial: ' + err.data);
+    });
+  });
+  socket.on('insertRequi', requi => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facitmespecial.php', requi).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      console.log('Error al insertar requisicion' + err);
+    });
   });
   socket.on('solicitud', (res) => {
     axios.get('https://free.currencyconverterapi.com/api/v6/convert?q=USD_GTQ&compact=ultra&apiKey=157e0765190fd121de41').then(res => {
@@ -98,8 +153,20 @@ io.sockets.on('connect', socket => {
       socket.emit('correlativo', result);
     });
   });
+  socket.on('nconservasa', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].conservasa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
   socket.on('cotesa', () => {
     axios.get('http://192.168.0.104/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].cotesa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('ncotesa', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
       let result = parseInt(res.data[0].cotesa, 10) + 1;
       socket.emit('correlativo', result);
     });
@@ -110,8 +177,20 @@ io.sockets.on('connect', socket => {
       socket.emit('correlativo', result);
     });
   });
+  socket.on('nprovisa', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].provisa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
   socket.on('asciende', () => {
     axios.get('http://192.168.0.104/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].asciende, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nasciende', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
       let result = parseInt(res.data[0].asciende, 10) + 1;
       socket.emit('correlativo', result);
     });
@@ -122,8 +201,20 @@ io.sockets.on('connect', socket => {
       socket.emit('correlativo', result);
     });
   });
+  socket.on('nceibalia', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].ceibalia, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
   socket.on('brickel', () => {
     axios.get('http://192.168.0.104/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].brickel, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nbrickel', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
       let result = parseInt(res.data[0].brickel, 10) + 1;
       socket.emit('correlativo', result);
     });
@@ -134,8 +225,20 @@ io.sockets.on('connect', socket => {
       socket.emit('correlativo', result);
     });
   });
+  socket.on('nfucorsa', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].fucorsa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
   socket.on('rensersa', () => {
     axios.get('http://192.168.0.104/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].rensersa, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nrensersa', () => {
+    axios.get('http://192.168.0.104/services/getNCorrelativos.php').then(res => {
       let result = parseInt(res.data[0].rensersa, 10) + 1;
       socket.emit('correlativo', result);
     });
@@ -169,12 +272,11 @@ io.sockets.on('connect', socket => {
           error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
           console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
           socket.emit('satError', error);
-        });
-        socket.emit('respuesta', respuesta);  
+        }); 
       }).catch(err => {
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
-        console.log(error.FirmaDocumentoResponse.listado_errores.error);
+        console.log('Error en la firma: ' + err);
     });
   });
   socket.on('factura', factura => {
@@ -211,7 +313,6 @@ io.sockets.on('connect', socket => {
           console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
           socket.emit('satError', error);
         });
-        socket.emit('respuesta', respuesta);  
       }).catch(err => {
         // error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         // socket.emit('serError', error);
