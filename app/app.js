@@ -143,8 +143,19 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('solicitud', (res) => {
-    axios.get('https://free.currencyconverterapi.com/api/v6/convert?q=USD_GTQ&compact=ultra&apiKey=157e0765190fd121de41').then(res => {
-      socket.emit('cambio', res.data);
+    axios.post('http://www.banguat.gob.gt/variables/ws/TipoCambio.asmx', banco, {
+      headers: {
+        'content-type': 'text/xml'
+      }
+    })
+    .then(res => {
+      let cambio = convert.xml2js(res.data, {compact: true, spaces: 2});
+      let tipo = cambio['soap:Envelope']['soap:Body'].TipoCambioDiaResponse.TipoCambioDiaResult.CambioDolar.VarDolar. referencia._text;
+      socket.emit('cambio', tipo);
+      console.log(tipo);
+    })
+    .catch(error => {
+      console.log('Error en cambio ' + error);
     });
   });
   socket.on('conservasa', () => {
