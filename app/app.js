@@ -346,7 +346,7 @@ io.sockets.on('connect', socket => {
           let respuesta = convert.xml2js(r, {compact: true, spaces: 2});
           socket.emit('respuesta', respuesta);
           console.log('si firmo');
-          console.log(respuesta);
+          console.log(respuesta.RegistraDocumentoXMLResponse);
         }).catch(err => {
           error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
           console.log('Post Firma: ' + error.FirmaDocumentoResponse.listado_errores.error);
