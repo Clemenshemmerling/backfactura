@@ -262,6 +262,11 @@ io.sockets.on('connect', socket => {
       socket.emit('correlativo', result);
     });
   });
+  socket.on('obraAnula', datos => {
+    axios.post('http://nodecore.grupomacro.com:9001/fel/facdistespecial.php', datos).then(res => {
+      console.log(res);
+    }).catch(err => console.log(err));
+  });
   socket.on('anular', factura => {
     axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura, {
       headers: {
