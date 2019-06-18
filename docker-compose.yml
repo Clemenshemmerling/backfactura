@@ -57,7 +57,7 @@ services:
     links:
       - mysql
     environment:
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: secret
+      PMA_HOST: innovagm.cmvdsechftku.us-east-1.rds.amazonaws.com
+      PMA_USER: regfeluser
+      PMA_PASSWORD: M4cr0+-2019
      
