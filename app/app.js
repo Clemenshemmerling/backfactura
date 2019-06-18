@@ -263,7 +263,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('obraAnula', datos => {
-    axios.post('http://172.31.26.87:9001/fel/facanulaobra.php', datos).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facanula.php', datos).then(res => {
       console.log(res);
     }).catch(err => console.log(err));
   });
