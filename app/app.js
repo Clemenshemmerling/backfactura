@@ -81,6 +81,14 @@ io.sockets.on('connect', socket => {
     } else if (compania === 'rensersa') {
       Solllave(rensersa);
       io.sockets.emit('key', key);
+    } else if (compania === 'macroin') {
+      io.sockets.emit('key', key);
+    } else if (compania === 'loire') {
+      io.sockets.emit('key', key);
+    } else if (compania === 'masiba') {
+      io.sockets.emit('key', key);
+    } else if (compania === 'yarikar') {
+      io.sockets.emit('key', key);
     }
   });
 
@@ -164,6 +172,54 @@ io.sockets.on('connect', socket => {
     })
     .catch(error => {
       console.log('Error en cambio ' + error);
+    });
+  });
+  socket.on('yarikar', () => {
+    axios.get('http://192.168.0.121/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].yarikar, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nyarikar', () => {
+    axios.get('http://192.168.0.121/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].yarikar, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('masiba', () => {
+    axios.get('http://192.168.0.121/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].masiba, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nmasiba', () => {
+    axios.get('http://192.168.0.121/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].masiba, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('loire', () => {
+    axios.get('http://192.168.0.121/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].loire, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nloire', () => {
+    axios.get('http://192.168.0.121/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].loire, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('macroin', () => {
+    axios.get('http://192.168.0.121/services/getCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].macroin, 10) + 1;
+      socket.emit('correlativo', result);
+    });
+  });
+  socket.on('nmacroin', () => {
+    axios.get('http://192.168.0.121/services/getNCorrelativos.php').then(res => {
+      let result = parseInt(res.data[0].macroin, 10) + 1;
+      socket.emit('correlativo', result);
     });
   });
   socket.on('conservasa', () => {
