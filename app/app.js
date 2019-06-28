@@ -426,7 +426,7 @@ io.sockets.on('connect', socket => {
 
 async function mail() {
   let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
+    host: "smtp.office365.com",
     port: 587,
     secure: false,
     auth: {
@@ -436,7 +436,7 @@ async function mail() {
   });
 
   let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    from: '"Fred Foo 👻" <soporte@grupomacro.com>', // sender address
     to: "chemmerling@grupomacro.com, aestrada@gruopomacro.com", // list of receivers
     subject: "Hello ✔", // Subject line
     text: "Hello world?", // plain text body
