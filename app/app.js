@@ -437,8 +437,8 @@ async function mail() {
 
   let info = await transporter.sendMail({
     from: '"Fred Foo 👻" <soporte@grupomacro.com>', // sender address
-    to: "chemmerling@grupomacro.com, aestrada@gruopomacro.com", // list of receivers
-    subject: "Hello ✔", // Subject line
+    to: "chemmerling@grupomacro.com, aestrada@grupomacro.com", // list of receivers
+    subject: "Facturas FEL ✔", // Subject line
     text: "Hello world?", // plain text body
     html: "<b>Hello world?</b>" // html body
   });
