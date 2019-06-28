@@ -99,6 +99,7 @@ io.sockets.on('connect', socket => {
       Solllave(cotesa);
       io.sockets.emit('key', key);
     } else if (compania === 'macroin') {
+      Solllave(macroin);
       io.sockets.emit('key', key);
     } else if (compania === 'loire') {
       io.sockets.emit('key', key);
