@@ -52,16 +52,16 @@ const rensersa =
 
   const cotesa =
     `<?xml version='1.0' encoding='UTF-8'?>
-      <SolicitaTokenRequest>
+    <SolicitaTokenRequest>
       <usuario>85590320</usuario>
-      <apikey>rnQP11qgpDPDTYinGNCUwlk</apikey>
+      <apikey>rnQP11qgpDPDTYinGNCUwIk</apikey>
     </SolicitaTokenRequest>`;
 
   const macroin =
     `<?xml version='1.0' encoding='UTF-8'?>
     <SolicitaTokenRequest>
       <usuario>6070051</usuario>
-      <apikey>oEN3XCHltc1U4ALG22j93dL</apikey>
+      <apikey>oEN3XCHltc1U4ALG22J93dL</apikey>
     </SolicitaTokenRequest>`;  
 
 let { Crypto } = require("@peculiar/webcrypto");
