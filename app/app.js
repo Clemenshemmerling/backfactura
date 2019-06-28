@@ -49,6 +49,20 @@ const rensersa =
     <apikey>uzQ4mquy4etJOswhbM8Cxc6</apikey>
   </SolicitaTokenRequest>`;
 
+  const cotesa =
+    `<?xml version='1.0' encoding='UTF-8'?>
+      <SolicitaTokenRequest>
+      <usuario>85590320</usuario>
+      <apikey>rnQP11qgpDPDTYinGNCUwlk</apikey>
+    </SolicitaTokenRequest>`;
+
+  const macroin =
+    `<?xml version='1.0' encoding='UTF-8'?>
+    <SolicitaTokenRequest>
+      <usuario>6070051</usuario>
+      <apikey>oEN3XCHltc1U4ALG22j93dL</apikey>
+    </SolicitaTokenRequest>`;  
+
 let { Crypto } = require("@peculiar/webcrypto");
 let xml;
 let key;
@@ -80,6 +94,9 @@ io.sockets.on('connect', socket => {
       io.sockets.emit('key', key);
     } else if (compania === 'rensersa') {
       Solllave(rensersa);
+      io.sockets.emit('key', key);
+    } else if (compania === 'cotesa') {
+      Solllave(cotesa);
       io.sockets.emit('key', key);
     } else if (compania === 'macroin') {
       io.sockets.emit('key', key);

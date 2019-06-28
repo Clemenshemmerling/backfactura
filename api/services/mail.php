@@ -9,4 +9,6 @@ $headers = "From: soporte@grupomacro.com" . "\r\n" .
 "CC: aestrada@grupomacro.com";
 
 mail($to, "Factura fel", $mensaje, $headers);
+
+return echo 'test';
 ?>
