@@ -11,8 +11,9 @@ const fs = require("fs"),
   forge = require('node-forge'),
   decode = require('unescape'),
   xadesjs = require("xadesjs"),
-  qs = require('qs');
-  
+  qs = require('qs'),
+  nodemailer = require("nodemailer");
+
 const banco =  
   `<?xml version="1.0" encoding="utf-8"?>
   <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -88,6 +89,7 @@ io.sockets.on('connect', socket => {
   socket.on('compania', compania => {
     if (compania === 'conservasa') {
       Solllave(conservasa);
+      mail();
       io.sockets.emit('key', key);
     } else if (compania === 'fucorsa') {
       Solllave(fucorsa);
@@ -421,6 +423,26 @@ io.sockets.on('connect', socket => {
   });
 
 });
+
+async function mail() {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'soporte@grupomacro.com',
+      pass: 's0p0rt3m@n@g3r'
+    }
+  });
+
+  let info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    to: "chemmerling@grupomacro.com, aestrada@gruopomacro.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>" // html body
+  });
+}
 
 function Solllave(compania) {
   axios.post('https://api.ifacere-fel.com/api/solicitarToken', compania, {
