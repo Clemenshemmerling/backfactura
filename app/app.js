@@ -89,7 +89,6 @@ io.sockets.on('connect', socket => {
   socket.on('compania', compania => {
     if (compania === 'conservasa') {
       Solllave(conservasa);
-      mail();
       io.sockets.emit('key', key);
     } else if (compania === 'fucorsa') {
       Solllave(fucorsa);
@@ -341,6 +340,9 @@ io.sockets.on('connect', socket => {
   socket.on('obraAnula', datos => {
     axios.post('http://172.31.26.87:9001/fel/facanula.php', datos).then(res => {
       console.log(res);
+      if (res.COD_ASIENTO) {
+        mail(res);
+      }
     }).catch(err => console.log(err));
   });
   socket.on('anular', factura => {
@@ -424,7 +426,7 @@ io.sockets.on('connect', socket => {
 
 });
 
-async function mail() {
+async function mail(res) {
   let transporter = nodemailer.createTransport({
     host: "smtp.office365.com",
     port: 587,
@@ -439,8 +441,8 @@ async function mail() {
     from: '"Fred Foo 👻" <soporte@grupomacro.com>', // sender address
     to: "chemmerling@grupomacro.com, aestrada@grupomacro.com", // list of receivers
     subject: "Facturas FEL ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>" // html body
+    text: res, // plain text body
+    html: "<b>" + res + "</b>" // html body
   });
 }
 
