@@ -339,9 +339,10 @@ io.sockets.on('connect', socket => {
   });
   socket.on('obraAnula', datos => {
     axios.post('http://172.31.26.87:9001/fel/facanula.php', datos).then(res => {
-      console.log(res);
-      if (res.COD_ASIENTO) {
-        mail(res);
+      console.log(res.data);
+      socket.emit('resanu', res.data);
+      if (res.data.asiento) {
+        mail(res.data);
       }
     }).catch(err => console.log(err));
   });
@@ -439,7 +440,7 @@ async function mail(res) {
 
   let info = await transporter.sendMail({
     from: '"Fred Foo 👻" <soporte@grupomacro.com>', // sender address
-    to: "chemmerling@grupomacro.com, aestrada@grupomacro.com", // list of receivers
+    to: "chemmerling@grupomacro.com, aestrada@grupomacro.com, asientoconta@grupomacro.com", // list of receivers
     subject: "Facturas FEL ✔", // Subject line
     text: res, // plain text body
     html: "<b>" + res + "</b>" // html body
@@ -475,7 +476,7 @@ function sign() {
     false, //whether the key is extractable (i.e. can be used in exportKey)
     ["sign", "verify"] //can be any combination of "sign" and "verify""verify" for public key import, "sign" for private key imports
   )
-  .then(function(keyPair){
+  .then(function(keyPair) {
     privateKey = keyPair.privateKey;
     publicKey = keyPair.publicKey;
     console.log(xml);
