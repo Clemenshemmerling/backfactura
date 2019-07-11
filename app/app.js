@@ -120,7 +120,6 @@ io.sockets.on('connect', socket => {
       socket.emit('errSisServ', 'error en el servidor');
     });
     socket.emit('resSys', 'datos desde el servidor');
-    // socket.removeAllListeners();
   });
   socket.on('headEspecial', datos => {
     axios.post('http://172.31.26.87:9001/fel/facheadespecial.php', datos).then(res => {
