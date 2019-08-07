@@ -50,19 +50,19 @@ const rensersa =
     <apikey>uzQ4mquy4etJOswhbM8Cxc6</apikey>
   </SolicitaTokenRequest>`;
 
-  const cotesa =
-    `<?xml version='1.0' encoding='UTF-8'?>
-    <SolicitaTokenRequest>
-      <usuario>85590320</usuario>
-      <apikey>rnQP11qgpDPDTYinGNCUwIk</apikey>
-    </SolicitaTokenRequest>`;
+const cotesa =
+  `<?xml version='1.0' encoding='UTF-8'?>
+  <SolicitaTokenRequest>
+    <usuario>85590320</usuario>
+    <apikey>rnQP11qgpDPDTYinGNCUwIk</apikey>
+  </SolicitaTokenRequest>`;
 
-  const macroin =
-    `<?xml version='1.0' encoding='UTF-8'?>
-    <SolicitaTokenRequest>
-      <usuario>6070051</usuario>
-      <apikey>oEN3XCHltc1U4ALG22J93dL</apikey>
-    </SolicitaTokenRequest>`;  
+const macroin =
+  `<?xml version='1.0' encoding='UTF-8'?>
+  <SolicitaTokenRequest>
+    <usuario>6070051</usuario>
+    <apikey>oEN3XCHltc1U4ALG22J93dL</apikey>
+  </SolicitaTokenRequest>`;  
 
 let { Crypto } = require("@peculiar/webcrypto");
 let xml;
@@ -110,9 +110,13 @@ io.sockets.on('connect', socket => {
       io.sockets.emit('key', key);
     }
   });
-
+  socket.on('tracking', datos => {
+    axios.get('link').then(res => {
+      console.log(res);
+    });
+  });
   socket.on('sistemaServ', datos => {
-    axios.post('http://172.31.26.87:9001/fel/fachead.php', datos).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facenc.php', datos).then(res => {
       console.log('Agregado al sistema');
       console.log(datos);
     }).catch(err => {
@@ -122,7 +126,7 @@ io.sockets.on('connect', socket => {
     socket.emit('resSys', 'datos desde el servidor');
   });
   socket.on('headEspecial', datos => {
-    axios.post('http://172.31.26.87:9001/fel/facheadespecial.php', datos).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facespenc.php', datos).then(res => {
       console.log('Agregado al sistema');
       console.log(datos);
     }).catch(err => {
@@ -133,12 +137,12 @@ io.sockets.on('connect', socket => {
     // socket.removeAllListeners();
   });
   socket.on('requisar', datos => {
-    axios.post('http://172.31.26.87:9001/fel/facdistespecial.php', datos).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facespdetdist.php', datos).then(res => {
       console.log(res.data);
     }).catch(err => console.log(err.data));
   });
   socket.on('insertServicio', items => {
-    axios.post('http://172.31.26.87:9001/fel/facitmservicio.php', items).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facdetserv.php', items).then(res => {
       console.log(res.data);
       socket.emit('insertResServicio', 'Se guardaron los datos de servicio en el sistema');
     }).catch(err => {
@@ -146,7 +150,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('insertObra', items => {
-    axios.post('http://172.31.26.87:9001/fel/facitmobra.php', items).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facdetobra', items).then(res => {
       console.log(res.data);
       socket.emit('insertResObra', 'Se guardaron los datos de obra en el sistema');
     }).catch(err => {
@@ -154,7 +158,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('insertBien', items => {
-    axios.post('http://172.31.26.87:9001/fel/facitmbien.php', items).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facdetmat.php', items).then(res => {
       console.log(res.data);
       socket.emit('insertResBien', 'Se guardaron los datos de bien en el sistema');
     }).catch(err => {
@@ -162,7 +166,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('insertEspecial', items => {
-    axios.post('http://172.31.26.87:9001/fel/facitmespecial.php', items).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facespdet.php', items).then(res => {
       console.log(res.data);
       socket.emit('insertResEspecial', 'Se guardaron los datos de especial en el sistema');
     }).catch(err => {
@@ -170,7 +174,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('insertRequi', requi => {
-    axios.post('http://172.31.26.87:9001/fel/facitmespecial.php', requi).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facespdet.php', requi).then(res => {
       console.log(res.data);
     }).catch(err => {
       console.log('Error al insertar requisicion' + err);
@@ -337,7 +341,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('obraAnula', datos => {
-    axios.post('http://172.31.26.87:9001/fel/facanula.php', datos).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facencanula.php', datos).then(res => {
       console.log(res.data);
       socket.emit('resanu', res.data);
       if (res.data.asiento) {
