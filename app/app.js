@@ -150,7 +150,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('insertObra', items => {
-    axios.post('http://172.31.26.87:9001/fel/facdetobra', items).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facdetobra.php', items).then(res => {
       console.log(res.data);
       socket.emit('insertResObra', 'Se guardaron los datos de obra en el sistema');
     }).catch(err => {
