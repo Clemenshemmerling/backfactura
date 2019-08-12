@@ -137,6 +137,7 @@ io.sockets.on('connect', socket => {
     // socket.removeAllListeners();
   });
   socket.on('requisar', datos => {
+    console.log(datos);
     axios.post('http://172.31.26.87:9001/fel/facespdetdist.php', datos).then(res => {
       console.log(res.data);
     }).catch(err => console.log(err.data));
@@ -166,6 +167,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('insertEspecial', items => {
+    console.log(items);
     axios.post('http://172.31.26.87:9001/fel/facespdet.php', items).then(res => {
       console.log(res.data);
       socket.emit('insertResEspecial', 'Se guardaron los datos de especial en el sistema');
