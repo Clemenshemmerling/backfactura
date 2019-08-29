@@ -89,25 +89,25 @@ io.sockets.on('connect', socket => {
   socket.on('compania', compania => {
     if (compania === 'conservasa') {
       Solllave(conservasa);
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'fucorsa') {
       Solllave(fucorsa);
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'rensersa') {
       Solllave(rensersa);
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'cotesa') {
       Solllave(cotesa);
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'macroin') {
       Solllave(macroin);
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'loire') {
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'masiba') {
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     } else if (compania === 'yarikar') {
-      io.sockets.emit('key', key);
+      io.sockets.emit('key', key.SolicitaTokenResponse.token._text);
     }
   });
   socket.on('tracking', datos => {
