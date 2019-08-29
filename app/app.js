@@ -430,7 +430,12 @@ io.sockets.on('connect', socket => {
       // socket.removeAllListeners();
   });
 
+  socket.on('testsend', res => {
+    console.log(res.key);
+  });
+
 });
+
 
 async function mail(res) {
   let transporter = nodemailer.createTransport({
