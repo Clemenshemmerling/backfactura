@@ -1,0 +1,7 @@
+{ version: 3,
+  safeContents: 
+   [ { encrypted: false, safeBags: [Array] },
+     { encrypted: true, safeBags: [Array] } ],
+  getBags: [Function: getBags],
+  getBagsByFriendlyName: [Function: getBagsByFriendlyName],
+  getBagsByLocalKeyId: [Function: getBagsByLocalKeyId] }
