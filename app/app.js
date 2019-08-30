@@ -85,6 +85,7 @@ io.sockets.on('connect', socket => {
   socket.on('body', body => {
     xml = body;
     console.log(xml);
+    
     sign();
   });
 
