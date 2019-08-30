@@ -6,7 +6,7 @@ ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_12_2:$LD_LIBRARY_PATH
 
 RUN apt-get update -y  
 RUN apt-get install -y libpng-dev
-RUN apt-get install -y mysql-client sendmail wget unzip
+RUN apt-get install -y mariadb-client sendmail wget unzip
 RUN apt-get install -y vim mlocate
 RUN updatedb
 
