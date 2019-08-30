@@ -79,13 +79,10 @@ console.log(p12);
 server.listen(port, '0.0.0.0');
 
 io.sockets.on('connect', socket => {
-  const client = {point: row.point, socket: socket};
-  clients[row.secret] = client;
   io.sockets.emit('key', llave);
   socket.on('body', body => {
     xml = body;
     console.log(xml);
-    
     sign();
   });
 
