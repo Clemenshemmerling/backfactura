@@ -29,7 +29,7 @@ const postedData =
     <apikey>2CjGSRYDfrkXOcW2xQbOEVV</apikey>
   </SolicitaTokenRequest>`;
 
-  const  conservasa = 
+const  conservasa = 
   `<?xml version='1.0' encoding='UTF-8'?>
   <SolicitaTokenRequest>
     <usuario>35325356</usuario>
@@ -74,12 +74,19 @@ let keyBase64 = keyFile.toString('base64');
 let p12Der = forge.util.decode64(keyBase64);
 let p12Asn1 = forge.asn1.fromDer(p12Der);
 let p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, 'E/2019/Fcs');
+let llaves = {
+  conservasa: '',
+  fucorsa: '',
+  rensersa: '',
+  cotesa: '',
+  macroin: ''
+};
 
 console.log(p12);
 server.listen(port, '0.0.0.0');
 
 io.sockets.on('connect', socket => {
-  io.sockets.emit('key', llave);
+  io.sockets.emit('key', llaves);
   socket.on('body', body => {
     xml = body;
     console.log(xml);
@@ -87,28 +94,29 @@ io.sockets.on('connect', socket => {
   });
 
   socket.on('compania', compania => {
-    if (compania === 'conservasa') {
-      Solllave(conservasa);
-      io.sockets.emit('key', key);
-    } else if (compania === 'fucorsa') {
-      Solllave(fucorsa);
-      io.sockets.emit('key', key);
-    } else if (compania === 'rensersa') {
-      Solllave(rensersa);
-      io.sockets.emit('key', key);
-    } else if (compania === 'cotesa') {
-      Solllave(cotesa);
-      io.sockets.emit('key', key);
-    } else if (compania === 'macroin') {
-      Solllave(macroin);
-      io.sockets.emit('key', key);
-    } else if (compania === 'loire') {
-      io.sockets.emit('key', key);
-    } else if (compania === 'masiba') {
-      io.sockets.emit('key', key);
-    } else if (compania === 'yarikar') {
-      io.sockets.emit('key', key);
-    }
+    solicitarLlaves();
+    // if (compania === 'conservasa') {
+    //   Solllave(conservasa);
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'fucorsa') {
+    //   Solllave(fucorsa);
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'rensersa') {
+    //   Solllave(rensersa);
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'cotesa') {
+    //   Solllave(cotesa);
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'macroin') {
+    //   Solllave(macroin);
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'loire') {
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'masiba') {
+    //   io.sockets.emit('key', key);
+    // } else if (compania === 'yarikar') {
+    //   io.sockets.emit('key', key);
+    // }
   });
   socket.on('tracking', datos => {
     axios.get('link').then(res => {
@@ -352,12 +360,13 @@ io.sockets.on('connect', socket => {
     }).catch(err => console.log(err));
   });
   socket.on('anular', factura => {
-    axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura, {
+    let key = factura.key;
+    axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura.factura, {
       headers: {
         'Content-Type': 'application/xml', 
-        Authorization: 'Bearer ' + llave 
+        Authorization: 'Bearer ' + key 
       }
-  }).then(res => {
+    }).then(res => {
     let r;
     r = decode(res.data.replace( /\<\?xml.+\?\>|<FirmaDocumentoResponse>|<\/FirmaDocumentoResponse>/g, '')
         .replace(/<xml_dte>|<\/xml_dte>|<listado_errores\/>|<tipo_respuesta>|<\/tipo_respuesta>/g, '')
@@ -367,7 +376,7 @@ io.sockets.on('connect', socket => {
       axios.post('https://api.ifacere-fel.com/api/anularDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
-            Authorization: 'Bearer ' + llave 
+            Authorization: 'Bearer ' + key 
           }
         }).then(res => {
           let r;
@@ -388,8 +397,8 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('factura', factura => {
-    let key = 'Bearer ' + llave;
-    axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura, {
+    let key = 'Bearer ' + factura.key;
+    axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura.factura, {
       headers: {
         'Content-Type': 'application/xml', 
         Authorization: key
@@ -407,7 +416,7 @@ io.sockets.on('connect', socket => {
         axios.post('https://api.ifacere-fel.com/api/registrarDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
-            Authorization: 'Bearer ' + llave 
+            Authorization: 'Bearer ' + key 
           }
         }).then(res => {
           let r;
@@ -425,7 +434,7 @@ io.sockets.on('connect', socket => {
         // error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         // socket.emit('serError', error);
         console.log(err.response.data);
-        console.log('Error: ' + 'Bearer ' + llave);
+        console.log('Error: ' + 'Bearer ' + key);
       });
       // socket.removeAllListeners();
   });
@@ -524,6 +533,75 @@ function sign() {
         })
       .then(signature => signature.toString());
   }
+}
+
+function solicitarLlaves() {
+  axios.post('https://api.ifacere-fel.com/api/solicitarToken', conservasa, {
+    headers: {
+      'content-type': 'application/xml'
+    }
+  })
+  .then(res => {
+    key = convert.xml2js(res.data, {compact: true, spaces: 2});
+    llave = key.SolicitaTokenResponse.token._text;
+    llaves.conservasa = llave;
+    axios.post('https://api.ifacere-fel.com/api/solicitarToken', fucorsa, {
+      headers: {
+        'content-type': 'application/xml'
+      }
+    })
+    .then(res => {
+      key = convert.xml2js(res.data, {compact: true, spaces: 2});
+      llave = key.SolicitaTokenResponse.token._text;
+      llaves.fucorsa = llave;
+      axios.post('https://api.ifacere-fel.com/api/solicitarToken', rensersa, {
+        headers: {
+          'content-type': 'application/xml'
+        }
+      })
+      .then(res => {
+        key = convert.xml2js(res.data, {compact: true, spaces: 2});
+        llave = key.SolicitaTokenResponse.token._text;
+        llaves.rensersa = llave;
+        axios.post('https://api.ifacere-fel.com/api/solicitarToken', cotesa, {
+          headers: {
+            'content-type': 'application/xml'
+          }
+        })
+        .then(res => {
+          key = convert.xml2js(res.data, {compact: true, spaces: 2});
+          llave = key.SolicitaTokenResponse.token._text;
+          llaves.cotesa = llave;
+          axios.post('https://api.ifacere-fel.com/api/solicitarToken', macroin, {
+            headers: {
+              'content-type': 'application/xml'
+            }
+          })
+          .then(res => {
+            key = convert.xml2js(res.data, {compact: true, spaces: 2});
+            llave = key.SolicitaTokenResponse.token._text;
+            llaves.macroin = llave;
+            console.log(key);
+          })
+          .catch(error => {
+            console.log('Error en token ' + error);
+          });  
+        })
+        .catch(error => {
+          console.log('Error en token ' + error);
+        }); 
+      })
+      .catch(error => {
+        console.log('Error en token ' + error);
+      }); 
+    })
+    .catch(error => {
+      console.log('Error en token ' + error);
+    });  
+  })
+  .catch(error => {
+    console.log('Error en token ' + error);
+  });
 }
 
 // let password = 'E/2019/Fcs';
