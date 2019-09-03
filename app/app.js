@@ -416,7 +416,7 @@ io.sockets.on('connect', socket => {
         axios.post('https://api.ifacere-fel.com/api/registrarDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
-            Authorization: 'Bearer ' + key 
+            Authorization: key 
           }
         }).then(res => {
           let r;
