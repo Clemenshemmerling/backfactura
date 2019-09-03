@@ -397,11 +397,11 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('factura', factura => {
-    let key = 'Bearer ' + factura.key;
+    let key = factura.key;
     axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura.factura, {
       headers: {
         'Content-Type': 'application/xml', 
-        Authorization: key
+        Authorization: 'Bearer ' + key
       }
     }).then(res => {
         console.log('firma: ' + key);
@@ -416,7 +416,7 @@ io.sockets.on('connect', socket => {
         axios.post('https://api.ifacere-fel.com/api/registrarDocumentoXML', fact, {
           headers: {
             'Content-Type': 'application/xml', 
-            Authorization: key 
+            Authorization: 'Bearer ' + key 
           }
         }).then(res => {
           let r;
