@@ -95,6 +95,7 @@ io.sockets.on('connect', socket => {
 
   socket.on('compania', compania => {
     solicitarLlaves();
+    envio();
     // if (compania === 'conservasa') {
     //   Solllave(conservasa);
     //   io.sockets.emit('key', key);
@@ -358,6 +359,20 @@ io.sockets.on('connect', socket => {
         mail(res.data);
       }
     }).catch(err => console.log(err));
+  });
+
+  socket.on('tracking', datos => {
+    axios.post('http://172.31.26.87:9001/systracking/regoc.php', datos, {
+    headers: {
+      'content-type': 'application/json',
+    }
+    }).then(res => {
+      console.log('Agregado al sistema');
+      console.log(datos);
+      socket.emit('trackingRes', res);
+    }).catch(err => {
+      console.log(err);
+    });
   });
   socket.on('anular', factura => {
     let key = factura.key;
