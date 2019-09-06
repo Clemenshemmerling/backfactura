@@ -95,7 +95,6 @@ io.sockets.on('connect', socket => {
 
   socket.on('compania', compania => {
     solicitarLlaves();
-    envio();
     // if (compania === 'conservasa') {
     //   Solllave(conservasa);
     //   io.sockets.emit('key', key);
