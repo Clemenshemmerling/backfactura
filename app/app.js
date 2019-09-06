@@ -361,7 +361,7 @@ io.sockets.on('connect', socket => {
     }).catch(err => console.log(err));
   });
 
-  socket.on('tracking', datos => {
+  socket.on('tracking2', datos => {
     axios.post('http://172.31.26.87:9001/systracking/regoc.php', datos, {
     headers: {
       'content-type': 'application/json',
