@@ -366,9 +366,8 @@ io.sockets.on('connect', socket => {
       'content-type': 'application/json',
     }
     }).then(res => {
-      console.log('Agregado al sistema');
       console.log(datos);
-      socket.emit('trackingRes', res);
+      socket.emit('trackingRes', res.data);
     }).catch(err => {
       console.log(err);
     });
