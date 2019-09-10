@@ -21,7 +21,7 @@
     "socket.io": "^2.2.0",
     "unescape": "^1.0.1",
     "xadesjs": "^2.0.14",
-    "xml-js": "^1.6.11",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"

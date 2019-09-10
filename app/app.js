@@ -351,7 +351,7 @@ io.sockets.on('connect', socket => {
     });
   });
   socket.on('obraAnula', datos => {
-    axios.post('http://172.31.26.87:9001/fel/facanula.php', datos).then(res => {
+    axios.post('http://172.31.26.87:9001/fel/facencanula.php ', datos).then(res => {
       console.log(res.data);
       socket.emit('resanu', res.data);
       if (res.data.asiento) {
@@ -404,6 +404,7 @@ io.sockets.on('connect', socket => {
           socket.emit('satError', error);
         }); 
       }).catch(err => {
+        console.log(err);
         error = convert.xml2js(err.response.data, {compact: true, spaces: 2});
         socket.emit('serError', error);
         console.log('Error en la firma: ' + err);
