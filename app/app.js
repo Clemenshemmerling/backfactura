@@ -121,6 +121,8 @@ io.sockets.on('connect', socket => {
   socket.on('tracking', datos => {
     axios.get('link').then(res => {
       console.log(res);
+    }).catch(err => {
+      console.log(err);
     });
   });
   socket.on('sistemaServ', datos => {
