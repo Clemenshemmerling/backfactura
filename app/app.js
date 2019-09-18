@@ -374,6 +374,18 @@ io.sockets.on('connect', socket => {
       console.log(err);
     });
   });
+  socket.on('ppp', datos => {
+    axios.post('http://172.31.26.87:9001/systracking/regppp.php', datos, {
+    headers: {
+      'content-type': 'application/json',
+    }
+    }).then(res => {
+      console.log(datos);
+      socket.emit('pppRes', res.data);
+    }).catch(err => {
+      console.log(err);
+    });
+  });
   socket.on('anular', factura => {
     let key = factura.key;
     axios.post('https://api.soluciones-mega.com/api/solicitaFirma', factura.factura, {
