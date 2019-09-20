@@ -369,6 +369,7 @@ io.sockets.on('connect', socket => {
     }
     }).then(res => {
       console.log(datos);
+      console.log(res);
       socket.emit('trackingRes', res.data);
     }).catch(err => {
       console.log(err);
