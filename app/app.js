@@ -363,7 +363,7 @@ io.sockets.on('connect', socket => {
   });
 
   socket.on('tracking2', datos => {
-    axios.post(datos.url, datos.datos, {
+    axios.post(datos.url, JSON.stringify(datos.datos), {
     headers: {
       'content-type': 'application/json',
     }
