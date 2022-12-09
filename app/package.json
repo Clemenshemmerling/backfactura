@@ -14,7 +14,7 @@
     "@peculiar/webcrypto": "^1.0.8",
     "axios": "^0.18.0",
     "child_process": "^1.0.2",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "node-forge": "^0.8.2",
     "path": "^0.12.7",
     "socket.io": "^2.2.0",
